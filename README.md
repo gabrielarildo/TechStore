@@ -171,9 +171,3 @@ Os dados são persistidos no SQL Server e permanecem salvos após reiniciar a ap
 - `ValidateAntiForgeryToken` em formulários POST
 - Nenhuma funcionalidade fora do escopo (sem login, pagamentos ou carrinho)
 - Nenhum dado fictício utilizado para simular operações reais
-
-## Limitações do Ambiente
-
-- Não foi possível aplicar a migration ao SQL Server nem executar testes de ponta a ponta, pois **o SQL Server não está disponível neste ambiente de desenvolvimento**. A string de conexão está configurada para `localhost` com autenticação do Windows.
-- A compilação do projeto foi realizada com sucesso (0 erros).
-- Os testes de CRUD, relacionamento, pesquisa, validações e interface devem ser realizados em um ambiente com SQL Server instalado e configurado.
