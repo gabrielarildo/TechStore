@@ -1,0 +1,130 @@
+@model IEnumerable<TechStore.Models.Produto>
+
+@{
+    ViewData["Title"] = "Produtos";
+    var busca = ViewBag.Busca as string ?? string.Empty;
+    var categoriaId = ViewBag.CategoriaId as int? ?? 0;
+    var categorias = ViewBag.Categorias as Microsoft.AspNetCore.Mvc.Rendering.SelectList ?? new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Enumerable.Empty<TechStore.Models.Categoria>(), "Id", "Nome");
+}
+
+<div class="page-header">
+    <h1>Produtos</h1>
+    <p>Gerencie o estoque de produtos da loja</p>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <span>Lista de produtos (@Model.Count())</span>
+        <div class="d-flex gap-2 w-100">
+            <a asp-action="Create" class="btn btn-tech flex-fill">
+                <i class="bi bi-plus-lg"></i> Novo Produto
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label visually-hidden">Buscar por nome</label>
+                <input type="text" name="busca" class="form-control" placeholder="Buscar produto pelo nome..." value="@busca" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label visually-hidden">Categoria</label>
+                <select name="categoriaId" class="form-select" asp-items="ViewBag.Categorias"></select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-tech w-100">Filtrar</button>
+            </div>
+            <div class="col-md-3 d-flex align-items-end gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary w-auto">Limpar filtros</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <div class="empty-state text-center py-4">
+                <div class="icone-vazio">📦</div>
+                <h5>Nenhum produto encontrado.</h5>
+                <p class="text-muted">Tente limpar os filtros ou cadastre um novo produto.</p>
+                <a asp-action="Create" class="btn btn-tech mt-3">Cadastrar produto</a>
+            </div>
+        }
+        else
+        {
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Estoque</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var produto in Model.OrderBy(p => p.Nome))
+                    {
+                        <tr>
+                            <td>@produto.Id</td>
+                            <td>
+                                <strong>@produto.Nome</strong>
+                                <br /><small class="text-muted">@(!string.IsNullOrEmpty(produto.Descricao) ? produto.Descricao : "-")</small>
+                            </td>
+                            <td>
+                                <span class="badge badge-categoria">@produto.Categoria?.Nome ?? "Sem categoria"</span>
+                            </td>
+                            <td>
+                                @produto.Preco.ToString("C")
+                            </td>
+                            <td>
+                                @if (produto.QuantidadeEstoque == 0)
+                                {
+                                    <span class="badge bg-danger">Sem estoque</span>
+                                }
+                                else if (produto.QuantidadeEstoque < 5)
+                                {
+                                    <span class="badge bg-warning text-dark">Baixo estoque</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">@produto.QuantidadeEstoque</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@produto.Id" class="btn-action btn-outline-primary" title="Detalhes">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@produto.Id" class="btn-action btn-outline-warning" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@produto.Id" class="btn-action btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza de que deseja excluir este produto?');">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

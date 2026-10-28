@@ -1,0 +1,64 @@
+@model TechStore.Models.Categoria
+
+@{
+    ViewData["Title"] = "Excluir Categoria";
+}
+
+<div class="page-header">
+    <h1>Excluir Categoria</h1>
+    <p>Confirme a exclusão da categoria #@Model.Id</p>
+</div>
+
+<div class="card shadow-sm border-danger">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">Confirmação de Exclusão</h5>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Tem certeza de que deseja excluir a categoria <strong>@Html.DisplayFor(m => m.Nome)</strong>?
+        </div>
+
+        @if (Model.Produtos != null && Model.Produtos.Any())
+        {
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-circle-fill me-2"></i>
+                Esta categoria possui <strong>@Model.Produtos.Count produto(s) vinculado(s)</strong> e não pode ser excluída.
+                Exclua ou mova os produtos antes de prosseguir.
+            </div>
+            <ul class="list-unstyled small mb-3">
+                @foreach (var produto in Model.Produtos.OrderBy(p => p.Nome))
+                {
+                    <li><i class="bi bi-box me-1"></i> @produto.Nome</li>
+                }
+            </ul>
+        }
+
+        <dl class="row small">
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Nome)</dd>
+
+            <dt class="col-sm-3">Descrição</dt>
+            <dd class="col-sm-9">
+                @(!string.IsNullOrEmpty(Model.Descricao) ? Html.DisplayFor(m => m.Descricao) : "<span class=\"text-muted\">Não informada</span>")
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+        @if (Model.Produtos == null || !Model.Produtos.Any())
+        {
+            <form asp-action="Delete" method="post">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza de que deseja excluir esta categoria?');">
+                    <i class="bi bi-trash3"></i> Excluir
+                </button>
+            </form>
+        }
+        else
+        {
+            <button type="button" class="btn btn-danger" disabled>
+                <i class="bi bi-ban"></i> Bloqueado (possui produtos)
+            </button>
+        }
+    </div>
+</div>

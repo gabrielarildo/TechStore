@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Início";
+}
+
+<div class="page-header">
+    <h1>TechStore</h1>
+    <p>Sistema de gerenciamento de loja de informática</p>
+</div>
+
+<div class="dashboard-cards">
+    <div class="dashboard-card">
+        <span class="icone">📦</span>
+        <div class="info">
+            <h3>@ViewBag.TotalProdutos</h3>
+            <p>Produtos cadastrados</p>
+        </div>
+    </div>
+    <div class="dashboard-card categorias">
+        <span class="icone">🗂️</span>
+        <div class="info">
+            <h3>@ViewBag.TotalCategorias</h3>
+            <p>Categorias cadastradas</p>
+        </div>
+    </div>
+    <div class="dashboard-card estoque">
+        <span class="icone">📊</span>
+        <div class="info">
+            <h3>@ViewBag.TotalEstoque</h3>
+            <p>Itens em estoque</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Ações rápidas</h5>
+            </div>
+            <div class="card-body">
+                <a asp-action="Index" asp-controller="Produtos" class="btn btn-tech w-100 mb-2">
+                    Gerenciar Produtos
+                </a>
+                <a asp-action="Index" asp-controller="Categorias" class="btn btn-outline-tech w-100">
+                    Gerenciar Categorias
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Sobre o sistema</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    O TechStore permite o cadastro, listagem, edição e exclusão de categorias e produtos,
+                    com relacionamento entre as entidades, pesquisa por nome e filtro por categoria.
+                </p>
+                <ul class="list-unstyled small text-muted">
+                    <li><i class="bi bi-check2"></i> CRUD completo de Categorias</li>
+                    <li><i class="bi bi-check2"></i> CRUD completo de Produtos</li>
+                    <li><i class="bi bi-check2"></i> Relacionamento Categoria ↔ Produto</li>
+                    <li><i class="bi bi-check2"></i> Pesquisa e filtros de produtos</li>
+                    <li><i class="bi bi-check2"></i> Persistência em SQL Server</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="scripts" class="Scripts"></section>

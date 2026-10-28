@@ -1,0 +1,44 @@
+@model TechStore.Models.Categoria
+
+@{
+    ViewData["Title"] = "Cadastrar Categoria";
+}
+
+<div class="page-header">
+    <h1>Nova Categoria</h1>
+    <p>Preencha os dados para cadastrar uma nova categoria</p>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0">Formulário de Cadastro</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label asp-for="Nome" class="form-label"></label>
+                        <input asp-for="Nome" class="form-control" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label asp-for="Descricao" class="form-label"></label>
+                        <textarea asp-for="Descricao" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Descricao" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a asp-action="Index" class="btn btn-outline-secondary me-2">Cancelar</a>
+                <button type="submit" class="btn btn-tech">Cadastrar Categoria</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

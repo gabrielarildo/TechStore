@@ -1,0 +1,74 @@
+@model TechStore.Models.Produto
+
+@{
+    ViewData["Title"] = "Detalhes do Produto";
+}
+
+<div class="page-header">
+    <h1>Detalhes do Produto</h1>
+    <p>Visualização dos dados do produto selecionado</p>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Produto #@Model.Id</span>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+    </div>
+    <div class="card-body row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Nome</dt>
+                <dd class="col-sm-8">@Model.Nome</dd>
+
+                <dt class="col-sm-4">Descrição</dt>
+                <dd class="col-sm-8">
+                    @(!string.IsNullOrEmpty(Model.Descricao) ? Model.Descricao : "<span class=\"text-muted\">Não informada</span>")
+                </dd>
+
+                <dt class="col-sm-4">Categoria</dt>
+                <dd class="col-sm-8">
+                    <span class="badge badge-categoria">@Model.Categoria?.Nome ?? "Não informada"</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Preço</dt>
+                <dd class="col-sm-8">
+                    <strong>@Model.Preco.ToString("C")</strong>
+                </dd>
+
+                <dt class="col-sm-4">Quantidade em estoque</dt>
+                <dd class="col-sm-8">
+                    @if (Model.QuantidadeEstoque == 0)
+                    {
+                        <span class="badge bg-danger">Sem estoque</span>
+                    }
+                    else if (Model.QuantidadeEstoque < 5)
+                    {
+                        <span class="badge bg-warning text-dark">Baixo estoque</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">@Model.QuantidadeEstoque</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">Valor total em estoque</dt>
+                <dd class="col-sm-8">
+                    <strong>@((Model.Preco * Model.QuantidadeEstoque).ToString("C"))</strong>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="card-footer text-end">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning me-2">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger" onclick="return confirm('Tem certeza de que deseja excluir este produto?');">
+            <i class="bi bi-trash3"></i> Excluir
+        </a>
+    </div>
+</div>

@@ -1,0 +1,86 @@
+@{
+    ViewData["Title"] = "Categorias";
+    var categorias = Model as IEnumerable<TechStore.Models.Categoria> ?? Enumerable.Empty<TechStore.Models.Categoria>();
+}
+
+<div class="page-header">
+    <h1>Categorias</h1>
+    <p>Gerencie as categorias de produtos da loja</p>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Lista de categorias (@categorias.Count())</span>
+        <a asp-action="Create" class="btn btn-tech btn-sm">
+            <i class="bi bi-plus-lg"></i> Nova Categoria
+        </a>
+    </div>
+    <div class="card-body">
+        @if (!categorias.Any())
+        {
+            <div class="empty-state">
+                <div class="icone-vazio">🗂️</div>
+                <p>Nenhuma categoria cadastrada.</p>
+                <a asp-action="Create" class="btn btn-tech mt-3">Cadastrar categoria</a>
+            </div>
+        }
+        else
+        {
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Produtos</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var categoria in categorias)
+                    {
+                        <tr>
+                            <td>@categoria.Id</td>
+                            <td>
+                                <strong>@categoria.Nome</strong>
+                            </td>
+                            <td>
+                                @(!string.IsNullOrEmpty(categoria.Descricao) ? categoria.Descricao : "<span class=\"text-muted\">Sem descrição</span>")
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">@categoria.Produtos.Count</span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@categoria.Id" class="btn-action btn-outline-primary" title="Detalhes">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@categoria.Id" class="btn-action btn-outline-warning" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@categoria.Id" class="btn-action btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza de que deseja excluir esta categoria?');">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
